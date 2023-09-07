@@ -20,8 +20,13 @@ ApplicationWindow {
             Button {
                 text: "Load"
                 onClicked: {
-                    //loader.source = DynamicFilesHelper.dataDir + '/' + DynamicFilesHelper.availableFiles[dynamicFileComboBox.currentIndex]
                     loader.source = DynamicFilesHelper.availableFiles[dynamicFileComboBox.currentIndex]
+                }
+            }
+            Button {
+                text: "Load Current"
+                onClicked: {
+                    loader.source = codeEditor.currentFile
                 }
             }
         }
@@ -33,108 +38,52 @@ ApplicationWindow {
             console.log("failed to installStarterTemplates")
     }
 
-    DynamicItemLoader {
-        id: loader
+    SplitView {
+        id: splitView
         anchors.fill: parent
-        source: ""
-    }
+        DynamicItemLoader {
+            id: loader
+            SplitView.fillHeight: true
+            SplitView.fillWidth: true
+            SplitView.minimumWidth: splitView.width * 0.25
+            source: ""
+        }
 
-    CodeEditor {
-        id: codeEditor
-        property real editorHeight: 0.5
-        anchors.right: parent.right
-        anchors.left: parent.left
-        height: parent.height * editorHeight
+        Item {
+            id: toolPage
+            SplitView.preferredWidth: splitView.width * 0.5
+            SplitView.fillHeight: true
+            SplitView.fillWidth: true
+            TabBar {
+                id: tabBar
+                anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.top: parent.top
+                Layout.fillWidth: true
+                TabButton {
+                    text: "Editor"
+                }
+                TabButton {
+                    text: "Console"
+                }
+            }
+            StackLayout {
+                currentIndex: tabBar.currentIndex
+                anchors.right: parent.right
+                anchors.left: parent.left
+                anchors.top: tabBar.bottom
+                anchors.bottom: parent.bottom
 
-        projectFolder: DynamicFilesHelper.dataDir
-
-        state: "hidden"
-
-        Shortcut {
-            id: editorShortcut
-            sequence: "F10"
-            onActivated: {
-                if (codeEditor.state === 'hidden') {
-                    codeEditor.state = 'visible'
-                } else {
-                    codeEditor.state = 'hidden'
+                CodeEditor {
+                    id: codeEditor
+                    property real editorHeight: 0.5
+                    projectFolder: DynamicFilesHelper.dataDir
+                }
+                ScriptConsoleItem {
+                    id: consoleItem
+                    property real consoleHeight: 0.5
                 }
             }
         }
-
-        states: [
-            State {
-                name: "hidden"
-                PropertyChanges {
-                    codeEditor.y: codeEditor.parent.height + codeEditor.height
-                    codeEditor.focus: false
-                }
-            },
-            State {
-                name: "visible"
-                PropertyChanges {
-                    codeEditor.y: codeEditor.parent.height - codeEditor.height
-                    codeEditor.focus: true
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                from: "hidden"
-                to: "visible"
-                reversible: true
-                NumberAnimation { properties: "y"; duration: 200 }
-            }
-        ]
-    }
-
-    ScriptConsoleItem {
-        id: consoleItem
-        property real consoleHeight: 0.5
-
-        anchors.right: parent.right
-        anchors.left: parent.left
-        height: parent.height * consoleHeight
-
-        state: "hidden"
-
-        Shortcut {
-            id: consoleShortcut
-            sequence: "F12"
-            onActivated: {
-                if (consoleItem.state === 'hidden') {
-                    consoleItem.state = 'visible'
-                } else {
-                    consoleItem.state = 'hidden'
-                }
-            }
-        }
-
-        states: [
-            State {
-                name: "hidden"
-                PropertyChanges {
-                    consoleItem.y: -height
-                    consoleItem.focus: false
-                }
-            },
-            State {
-                name: "visible"
-                PropertyChanges {
-                    consoleItem.y: 0
-                    consoleItem.focus: true
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                from: "hidden"
-                to: "visible"
-                reversible: true
-                NumberAnimation { properties: "y"; duration: 200 }
-            }
-        ]
     }
 }

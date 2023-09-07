@@ -46,6 +46,8 @@ qt_add_qml_module(TrainingSandbox
     QML_FILES
         Main.qml
         DynamicItemLoader.qml
+        DynamicNodeLoader.qml
+        OriginGizmo.qml
     SOURCES
         dynamicfileshelper.h dynamicfileshelper.cpp
 )

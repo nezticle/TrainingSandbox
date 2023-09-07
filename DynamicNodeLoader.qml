@@ -1,6 +1,7 @@
 import QtQuick
+import QtQuick3D
 
-Item {
+Node {
     id: loaderRoot
     property url source: ""
     property var properties: ({})
@@ -19,6 +20,7 @@ Item {
             if (!realSource.toString().startsWith(DynamicFilesHelper.dataDir)) {
                 realSource = DynamicFilesHelper.dataDir + "/" + realSource
             }
+
             // start monitoring the new file
             let success = DynamicFilesHelper.watchFile(realSource)
             success = loaderData.tryToCreateComponent(realSource)
