@@ -1,0 +1,6 @@
+[submodule "CodeEditor"]
+	path = CodeEditor
+	url = git@git.qt.io:annichol/CodeEditor.git
+[submodule "ScriptConsole"]
+	path = ScriptConsole
+	url = git@git.qt.io:annichol/ScriptConsole.git
