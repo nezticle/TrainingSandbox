@@ -28,7 +28,6 @@ Item {
                 loaderData.updateObjectInstance()
             } else {
                 ScriptContext.logError(loaderData.errorString)
-                //console.log(loaderData.errorString)
             }
         }
     }

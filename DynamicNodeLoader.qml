@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick3D
+import ScriptConsole
 
 Node {
     id: loaderRoot
@@ -27,7 +28,7 @@ Node {
             if (success === true) {
                 loaderData.updateObjectInstance()
             } else {
-                console.log(loaderData.errorString)
+                ScriptContext.logError(loaderData.errorString)
             }
         }
     }
@@ -90,7 +91,7 @@ Node {
                 if (success === true) {
                     loaderData.updateObjectInstance()
                 } else {
-                    console.log(loaderData.errorString)
+                    ScriptContext.logError(loaderData.errorString)
                 }
             }
         }
