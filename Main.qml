@@ -12,17 +12,6 @@ ApplicationWindow {
 
     header: ToolBar {
         RowLayout {
-            ComboBox {
-                id: dynamicFileComboBox
-                Layout.fillWidth: true
-                model: DynamicFilesHelper.availableFileNames
-            }
-            Button {
-                text: "Load"
-                onClicked: {
-                    loader.source = DynamicFilesHelper.availableFiles[dynamicFileComboBox.currentIndex]
-                }
-            }
             Button {
                 text: "Load Current"
                 onClicked: {
@@ -47,42 +36,27 @@ ApplicationWindow {
             SplitView.fillWidth: true
             SplitView.minimumWidth: splitView.width * 0.25
             source: ""
+            onLoadedInstanceChanged: ScriptContext.expose(loadedInstance, "loadedInstance")
         }
 
-        Item {
-            id: toolPage
+        SplitView {
+            id: toolsSplitView
             SplitView.preferredWidth: splitView.width * 0.5
             SplitView.fillHeight: true
             SplitView.fillWidth: true
-            TabBar {
-                id: tabBar
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.top: parent.top
-                Layout.fillWidth: true
-                TabButton {
-                    text: "Editor"
-                }
-                TabButton {
-                    text: "Console"
-                }
+            orientation: Qt.Vertical
+            CodeEditor {
+                id: codeEditor
+                projectFolder: DynamicFilesHelper.dataDir
+                SplitView.fillHeight: true
+                SplitView.fillWidth: true
+                SplitView.preferredHeight: toolsSplitView.height * 0.8
             }
-            StackLayout {
-                currentIndex: tabBar.currentIndex
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.top: tabBar.bottom
-                anchors.bottom: parent.bottom
-
-                CodeEditor {
-                    id: codeEditor
-                    property real editorHeight: 0.5
-                    projectFolder: DynamicFilesHelper.dataDir
-                }
-                ScriptConsoleItem {
-                    id: consoleItem
-                    property real consoleHeight: 0.5
-                }
+            ScriptConsoleItem {
+                id: consoleItem
+                SplitView.preferredHeight: toolsSplitView.height * 0.2
+                SplitView.fillHeight: true
+                SplitView.fillWidth: true
             }
         }
     }

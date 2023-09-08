@@ -1,9 +1,11 @@
 import QtQuick
+import ScriptConsole
 
 Item {
     id: loaderRoot
     property url source: ""
     property var properties: ({})
+    readonly property alias loadedInstance: loaderData.objectInstance
 
     onSourceChanged: {
         if (loaderData.componentUrl != "") {
@@ -25,7 +27,8 @@ Item {
             if (success === true) {
                 loaderData.updateObjectInstance()
             } else {
-                console.log(loaderData.errorString)
+                ScriptContext.logError(loaderData.errorString)
+                //console.log(loaderData.errorString)
             }
         }
     }
@@ -80,6 +83,8 @@ Item {
         target: DynamicFilesHelper
         function onFileUpdated(url) {
             let fileUpdated = new URL(url);
+            if (loaderData.componentUrl === "")
+                return
             let currentFile = new URL(loaderData.componentUrl);
 
             if (fileUpdated.href === currentFile.href) {
@@ -88,7 +93,8 @@ Item {
                 if (success === true) {
                     loaderData.updateObjectInstance()
                 } else {
-                    console.log(loaderData.errorString)
+                    ScriptContext.logError(loaderData.errorString)
+                    //console.log(loaderData.errorString)
                 }
             }
         }
