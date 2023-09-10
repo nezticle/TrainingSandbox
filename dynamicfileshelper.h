@@ -22,9 +22,15 @@ public:
     Q_INVOKABLE bool watchFile(const QUrl &url);
     Q_INVOKABLE bool unwatchFile(const QUrl &url);
 
-    QList<QUrl> availableFiles() const;
+    Q_INVOKABLE void openTemplateDirectory();
 
+    QList<QUrl> availableFiles() const;
     QList<QString> availableFileNames() const;
+
+    Q_INVOKABLE QList<QString> imageNameFilters() const;
+    Q_INVOKABLE void importImages(const QList<QUrl> &urls, const QUrl &currentFile);
+    Q_INVOKABLE void importModel(const QUrl &modelLocation, const QUrl &currentFile);
+
 
 signals:
     void availableFilesChanged();

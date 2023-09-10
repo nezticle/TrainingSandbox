@@ -3,6 +3,10 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QCoreApplication>
+#include <QDesktopServices>
+#include <QImageReader>
+#include <QLibraryInfo>
+#include <QProcess>
 
 DynamicFilesHelper::DynamicFilesHelper(QObject *parent)
     : QObject{parent}
@@ -85,6 +89,11 @@ bool DynamicFilesHelper::watchFile(const QUrl &url)
 bool DynamicFilesHelper::unwatchFile(const QUrl &url)
 {
     return m_fileSystemWatcher.removePath(url.toLocalFile());
+}
+
+void DynamicFilesHelper::openTemplateDirectory()
+{
+    QDesktopServices::openUrl(m_dataDir);
 }
 
 void DynamicFilesHelper::onDirectoryChanged(const QString &path)
@@ -220,4 +229,83 @@ void DynamicFilesHelper::onFileChanged(const QString &path)
 QList<QString> DynamicFilesHelper::availableFileNames() const
 {
     return m_availableFiles.values();
+}
+
+QList<QString> DynamicFilesHelper::imageNameFilters() const
+{
+    QList<QString> filters;
+
+    QString imageFiles = "Image Files (";
+    auto imageReaderFormats = QImageReader::supportedImageFormats();
+    for (const auto &format : imageReaderFormats) {
+        imageFiles += "*." + format + " ";
+    }
+    imageFiles += ")";
+    filters << imageFiles;
+
+    // ktx, astc supported by QTextureFileReader
+    QString textureFiles = "Compressed Textures (*.ktx *.astc)";
+    filters << textureFiles;
+
+    // hdr, exr supported by QtQuick3D
+    QString hdrFiles = "HDR Files (*.hdr *.exr)";
+    filters << hdrFiles;
+
+    return filters;
+}
+
+void DynamicFilesHelper::importImages(const QList<QUrl> &urls, const QUrl &currentFile)
+{
+    // Figure out the target directory
+    QDir targetDir;
+    if (currentFile.isEmpty()) {
+        // if there is no currentFile set, the the target directory is the template directory root
+        const auto currentFileString = m_dataDir.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    } else {
+        const auto currentFileString = currentFile.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    }
+    // if the name of the directory is either images or maps then that is the target directory
+    // otherwise create a new directory called images
+    if (targetDir.dirName() != "images" || targetDir.dirName() != "maps") {
+        targetDir.mkdir("images");
+        targetDir.cd("images");
+    }
+
+    // Copy all files to the target directory
+    for (const auto &url : urls) {
+        const auto sourceFile = url.toLocalFile();
+        const auto targetFile = targetDir.absoluteFilePath(QFileInfo(sourceFile).fileName());
+        QFile::copy(sourceFile, targetFile);
+    }
+}
+
+void DynamicFilesHelper::importModel(const QUrl &modelLocation, const QUrl &currentFile)
+{
+    // Figure out the target directory
+    QDir targetDir;
+    if (currentFile.isEmpty()) {
+        // if there is no currentFile set, the the target directory is the template directory root
+        const auto currentFileString = m_dataDir.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    } else {
+        const auto currentFileString = currentFile.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    }
+
+    // Check if balsam binary is available
+    auto qtBinaryPath = QLibraryInfo::path(QLibraryInfo::BinariesPath);
+    auto balsamBinaryPath = qtBinaryPath + QDir::separator() + "balsam";
+    if (!QFile::exists(balsamBinaryPath)) {
+        qWarning() << "Could not find balsam binary at" << balsamBinaryPath;
+        return;
+    }
+
+    // Run balsam to convert the model
+    const auto modelFile = modelLocation.toLocalFile();
+    QStringList arguments;
+    arguments << "-o" << targetDir.absolutePath() << modelFile;
+
+    QProcess::execute(balsamBinaryPath, arguments);
 }

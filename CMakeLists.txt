@@ -50,6 +50,8 @@ qt_add_qml_module(TrainingSandbox
         OriginGizmo.qml
     SOURCES
         dynamicfileshelper.h dynamicfileshelper.cpp
+    RESOURCES
+        dripicons-v2.ttf
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
