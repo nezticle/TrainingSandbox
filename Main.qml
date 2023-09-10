@@ -30,7 +30,8 @@ ApplicationWindow {
 
             ToolButton {
                 id: openTemplateDirButton
-                font: iconFont.font
+                font.family: iconFont.font.family
+                font.pointSize: 24
                 text: "{"
                 onClicked: {
                     DynamicFilesHelper.openTemplateDirectory();
@@ -43,7 +44,8 @@ ApplicationWindow {
             }
             ToolButton {
                 id: importTexturesButton
-                font: iconFont.font
+                font.family: iconFont.font.family
+                font.pointSize: 24
                 text: "\ue032"
                 hoverEnabled: true
                 ToolTip.delay: 500
@@ -56,7 +58,8 @@ ApplicationWindow {
             }
             ToolButton {
                 id: importAssetsButton
-                font: iconFont.font
+                font.family: iconFont.font.family
+                font.pointSize: 24
                 text: "<"
                 hoverEnabled: true
                 ToolTip.delay: 500
@@ -74,7 +77,8 @@ ApplicationWindow {
 
             ToolButton {
                 id: toolViewButton
-                font: iconFont.font
+                font.family: iconFont.font.family
+                font.pointSize: 24
                 text: "y"
                 checkable: true
                 checked: true
