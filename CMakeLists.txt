@@ -52,6 +52,7 @@ qt_add_qml_module(TrainingSandbox
         dynamicfileshelper.h dynamicfileshelper.cpp
     RESOURCES
         dripicons-v2.ttf
+        sandbox.jpg
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

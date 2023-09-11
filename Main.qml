@@ -9,7 +9,15 @@ ApplicationWindow {
     width: 1280
     height: 720
     visible: true
-    title: qsTr("Training Sandbox")
+    title: generateWindowTitle(loader.source)
+
+    function generateWindowTitle(source: url) : string {
+        let title = qsTr("Training Sandbox")
+        if (source != "") {
+            title += " - " + DynamicFilesHelper.getFileName(source)
+        }
+        return title
+    }
 
     header: ToolBar {
         RowLayout {
@@ -100,13 +108,33 @@ ApplicationWindow {
     SplitView {
         id: splitView
         anchors.fill: parent
-        DynamicItemLoader {
-            id: loader
+        Item {
+            id: dynamicContentArea
             SplitView.fillHeight: true
             SplitView.fillWidth: true
             SplitView.minimumWidth: splitView.width * 0.25
-            source: ""
-            onLoadedInstanceChanged: ScriptContext.expose(loadedInstance, "loadedInstance")
+            DynamicItemLoader {
+                id: loader
+                anchors.fill: parent
+                source: ""
+                onLoadedInstanceChanged: ScriptContext.expose(loadedInstance, "loadedInstance")
+            }
+
+            Image {
+                visible: loader.source == ""
+                source: "sandbox.jpg"
+                fillMode: Image.Tile
+                anchors.fill: parent
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("No content loaded, select a file and load it.")
+                    font.pointSize: 24
+                    color: "white"
+                    style: Text.Outline
+                    styleColor: "black"
+                }
+            }
         }
 
         SplitView {

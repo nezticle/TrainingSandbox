@@ -99,6 +99,8 @@ Item {
         }
         function onFileDeleted(url) {
             let fileDeleted = new URL(url);
+            if (loaderData.componentUrl === "")
+                return
             let currentFile = new URL(loaderData.componentUrl);
             if (fileDeleted.href === currentFile.href) {
                 console.log("Current component source file was deleted");

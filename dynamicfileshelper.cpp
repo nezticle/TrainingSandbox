@@ -309,3 +309,14 @@ void DynamicFilesHelper::importModel(const QUrl &modelLocation, const QUrl &curr
 
     QProcess::execute(balsamBinaryPath, arguments);
 }
+
+QString DynamicFilesHelper::getFileName(const QUrl &url)
+{
+    QString fileName;
+    QFileInfo info(url.toLocalFile());
+    if (info.exists()) {
+        fileName = info.fileName();
+    }
+
+    return fileName;
+}
