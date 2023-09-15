@@ -22,8 +22,15 @@ ApplicationWindow {
     header: ToolBar {
         RowLayout {
             width: parent.width
-            Button {
-                text: "Load Current"
+            ToolButton {
+                text: "\ue01a"
+                font.family: iconFont.font.family
+                font.pointSize: 24
+                hoverEnabled: true
+                ToolTip.delay: 500
+                ToolTip.timeout: 5000
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Load Current")
                 onClicked: {
                     loader.source = codeEditor.currentFile
                 }
