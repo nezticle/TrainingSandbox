@@ -33,7 +33,17 @@ if (APPLE)
         #           This also preserves folder structure.
         source_group("Resources/data/${NEW_FILE_PATH}" FILES "${FILE}")
     endforeach ()
-endif ()
+else ()
+    # for anything that is not macOS/iOS just copy the files to the build folder
+    foreach(file ${BUNDLED_RESOURCES})
+        # To recreate the same folder structure we first need to read the base folder
+        file(RELATIVE_PATH RELATIVE_FILE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/data" ${file})
+        get_filename_component(FOLDER ${RELATIVE_FILE_PATH} DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/${FOLDER} )
+            message(STATUS "COPY ${file} -> ${CMAKE_CURRENT_BINARY_DIR}/data/${RELATIVE_FILE_PATH}")
+            configure_file(${file} "${CMAKE_CURRENT_BINARY_DIR}/data/${RELATIVE_FILE_PATH}" COPYONLY)
+    endforeach()
+endif()
 
 qt_add_executable(trainingSandbox
     main.cpp

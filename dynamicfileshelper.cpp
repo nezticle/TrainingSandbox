@@ -36,7 +36,10 @@ bool DynamicFilesHelper::installStarterTemplates(bool forceUpdate)
 #elif Q_OS_IOS
     applicationDirPath.cdUp();
 #endif
-    applicationDirPath.cd("data");
+    if(!applicationDirPath.cd("data")) {
+        qDebug() << "No data template directory to install!";
+        return false;
+    }
 
     QDir templatesDir(m_dataDir.toLocalFile());
 
