@@ -310,7 +310,35 @@ void DynamicFilesHelper::importModel(const QUrl &modelLocation, const QUrl &curr
     QStringList arguments;
     arguments << "-o" << targetDir.absolutePath() << modelFile;
 
-    QProcess::execute(balsamBinaryPath, arguments);
+    QProcess::startDetached(balsamBinaryPath, arguments);
+}
+
+void DynamicFilesHelper::openCustomMaterialEditor(const QUrl &currentFile)
+{
+    // Figure out the target directory
+    QDir targetDir;
+    if (currentFile.isEmpty()) {
+        // if there is no currentFile set, the the target directory is the template directory root
+        const auto currentFileString = m_dataDir.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    } else {
+        const auto currentFileString = currentFile.toLocalFile();
+        targetDir = QFileInfo(currentFileString).absoluteDir();
+    }
+
+    // Check if materialeditor binary is available
+    auto qtBinaryPath = QLibraryInfo::path(QLibraryInfo::BinariesPath);
+    auto materialEditorBinaryPath = qtBinaryPath + QDir::separator() + "materialeditor";
+    if (!QFile::exists(materialEditorBinaryPath)) {
+        qWarning() << "Could not find materialeditor binary at" << materialEditorBinaryPath;
+        return;
+    }
+
+    // Run materialeditor
+    QStringList arguments;
+    arguments << "-p" << targetDir.absolutePath();
+
+    QProcess::startDetached(materialEditorBinaryPath, arguments);
 }
 
 QString DynamicFilesHelper::getFileName(const QUrl &url)

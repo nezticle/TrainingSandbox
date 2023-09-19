@@ -30,6 +30,7 @@ public:
     Q_INVOKABLE QList<QString> imageNameFilters() const;
     Q_INVOKABLE void importImages(const QList<QUrl> &urls, const QUrl &currentFile);
     Q_INVOKABLE void importModel(const QUrl &modelLocation, const QUrl &currentFile);
+    Q_INVOKABLE void openCustomMaterialEditor(const QUrl &currentFile);
 
     Q_INVOKABLE QString getFileName(const QUrl &url);
 

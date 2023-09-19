@@ -85,6 +85,20 @@ ApplicationWindow {
                     assetFileImportDialog.open()
                 }
             }
+            ToolButton {
+                id: customMaterialEditorButton
+                font.family: iconFont.font.family
+                font.pointSize: 24
+                text: "L"
+                hoverEnabled: true
+                ToolTip.delay: 500
+                ToolTip.timeout: 5000
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Custom Material Editor")
+                onClicked: {
+                    DynamicFilesHelper.openCustomMaterialEditor(codeEditor.currentFile)
+                }
+            }
 
             ToolSeparator {
 
