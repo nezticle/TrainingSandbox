@@ -74,7 +74,8 @@ Item {
         function tryToCreateComponent(source : url) : bool {
             if (source === "")
                 return false
-            const avoidComponentCacheUrl = source + "?" + 'r' + getRevisionNumber(source)
+            const sourceUrl = new URL(source)
+            const avoidComponentCacheUrl = sourceUrl.href + "?" + 'r' + getRevisionNumber(sourceUrl.href)
             let newComponent = Qt.createComponent(avoidComponentCacheUrl)
             if (newComponent.status === Component.Ready) {
                 loaderData.component = newComponent

@@ -33,9 +33,9 @@ ApplicationWindow {
         id: loadCurrentAction
         text: qsTr("Load Current")
         shortcut: "F4"
-        enabled: codeEditor.currentFile != ""
+        enabled: toolsView.codeEditor.currentFile != ""
         onTriggered: {
-            loader.source = codeEditor.currentFile
+            loader.source = toolsView.codeEditor.currentFile
         }
     }
 
@@ -63,9 +63,6 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Force Reload (F5)")
                 action: explicitReloadAction
-//                onClicked: {
-//                    loader.explicitReload()
-//                }
             }
             Item {
                 //spacer
@@ -128,7 +125,7 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Custom Material Editor")
                 onClicked: {
-                    DynamicFilesHelper.openCustomMaterialEditor(codeEditor.currentFile)
+                    DynamicFilesHelper.openCustomMaterialEditor(toolsView.codeEditor.currentFile)
                 }
             }
 
@@ -161,6 +158,13 @@ ApplicationWindow {
     SplitView {
         id: splitView
         anchors.fill: parent
+        ToolsView {
+            id: toolsView
+            SplitView.fillHeight: true
+            SplitView.preferredWidth: splitView.width * 0.5
+            visible: toolViewButton.checked
+        }
+
         Item {
             id: dynamicContentArea
             SplitView.fillHeight: true
@@ -189,30 +193,6 @@ ApplicationWindow {
                 }
             }
         }
-
-        SplitView {
-            id: toolsSplitView
-            visible: toolViewButton.checked
-            SplitView.preferredWidth: splitView.width * 0.5
-            SplitView.fillHeight: true
-            SplitView.fillWidth: true
-            orientation: Qt.Vertical
-            CodeEditor {
-                id: codeEditor
-                projectFolder: DynamicFilesHelper.dataDir
-                SplitView.fillHeight: true
-                SplitView.fillWidth: true
-                SplitView.minimumHeight: 128
-                SplitView.preferredHeight: toolsSplitView.height * 0.8
-            }
-            ScriptConsoleItem {
-                id: consoleItem
-                SplitView.preferredHeight: toolsSplitView.height * 0.2
-                SplitView.minimumHeight: 48
-                SplitView.fillHeight: true
-                SplitView.fillWidth: true
-            }
-        }
     }
 
     FontLoader {
@@ -228,7 +208,7 @@ ApplicationWindow {
         nameFilters: DynamicFilesHelper.imageNameFilters()
         onAccepted: {
             // images are imported relative to the current file
-            DynamicFilesHelper.importImages(imageFileImportDialog.selectedFiles, codeEditor.currentFile)
+            DynamicFilesHelper.importImages(imageFileImportDialog.selectedFiles, toolsView.codeEditor.currentFile)
         }
     }
 
@@ -240,7 +220,7 @@ ApplicationWindow {
         nameFilters: ["Model Files (*.gltf *.glb *.obj *.dae *.stl *.fbx)"]
         onAccepted: {
             // images are imported relative to the current file
-            DynamicFilesHelper.importModel(assetFileImportDialog.selectedFile, codeEditor.currentFile)
+            DynamicFilesHelper.importModel(assetFileImportDialog.selectedFile, toolsView.codeEditor.currentFile)
         }
     }
 }
