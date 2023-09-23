@@ -19,6 +19,26 @@ ApplicationWindow {
         return title
     }
 
+    Action {
+        id: explicitReloadAction
+        text: qsTr("Reload")
+        shortcut: "F5"
+        enabled: loader.source != ""
+        onTriggered: {
+            loader.explicitReload()
+        }
+    }
+
+    Action {
+        id: loadCurrentAction
+        text: qsTr("Load Current")
+        shortcut: "F4"
+        enabled: codeEditor.currentFile != ""
+        onTriggered: {
+            loader.source = codeEditor.currentFile
+        }
+    }
+
     header: ToolBar {
         RowLayout {
             width: parent.width
@@ -30,10 +50,22 @@ ApplicationWindow {
                 ToolTip.delay: 500
                 ToolTip.timeout: 5000
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Load Current")
-                onClicked: {
-                    loader.source = codeEditor.currentFile
-                }
+                ToolTip.text: qsTr("Load Current (F4)")
+                action: loadCurrentAction
+            }
+            ToolButton {
+                text: "Z"
+                font.family: iconFont.font.family
+                font.pointSize: 24
+                hoverEnabled: true
+                ToolTip.delay: 500
+                ToolTip.timeout: 5000
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Force Reload (F5)")
+                action: explicitReloadAction
+//                onClicked: {
+//                    loader.explicitReload()
+//                }
             }
             Item {
                 //spacer

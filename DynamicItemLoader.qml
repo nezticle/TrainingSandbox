@@ -16,19 +16,32 @@ Item {
         if (source === "") {
             loaderData.cleanup()
         } else {
-            // make sure source is prefixed with the data dir location
-            let realSource = source;
-            if (!realSource.toString().startsWith(DynamicFilesHelper.dataDir)) {
-                realSource = DynamicFilesHelper.dataDir + "/" + realSource
-            }
-            // start monitoring the new file
-            let success = DynamicFilesHelper.watchFile(realSource)
-            success = loaderData.tryToCreateComponent(realSource)
-            if (success === true) {
-                loaderData.updateObjectInstance()
-            } else {
-                ScriptContext.logError(loaderData.errorString)
-            }
+            _loadSource();
+        }
+    }
+
+    function explicitReload() {
+        // Do nothing if there was nothing to load
+        if (source === "")
+            return;
+
+        loaderData.cleanup();
+        _loadSource();
+    }
+
+    function _loadSource() {
+        // make sure source is prefixed with the data dir location
+        let realSource = source;
+        if (!realSource.toString().startsWith(DynamicFilesHelper.dataDir)) {
+            realSource = DynamicFilesHelper.dataDir + "/" + realSource
+        }
+        // start monitoring the new file
+        let success = DynamicFilesHelper.watchFile(realSource)
+        success = loaderData.tryToCreateComponent(realSource)
+        if (success === true) {
+            loaderData.updateObjectInstance()
+        } else {
+            ScriptContext.logError(loaderData.errorString)
         }
     }
 
