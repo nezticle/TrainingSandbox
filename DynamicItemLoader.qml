@@ -38,6 +38,16 @@ Item {
         property url componentUrl: ""
         property string errorString: ""
         property var objectInstance: null
+        property var revisionTable: ({}) // source: revisionNumber
+
+        function getRevisionNumber(source : url) : int {
+            if (loaderData.revisionTable.hasOwnProperty(source)) {
+                loaderData.revisionTable[source] = revisionTable[source] + 1
+            } else {
+                loaderData.revisionTable[source] = 0
+            }
+            return loaderData.revisionTable[source]
+        }
 
         function cleanup() {
             if (loaderData.objectInstance != null)
@@ -51,7 +61,7 @@ Item {
         function tryToCreateComponent(source : url) : bool {
             if (source === "")
                 return false
-            const avoidComponentCacheUrl = source + "?" + Math.random()
+            const avoidComponentCacheUrl = source + "?" + 'r' + getRevisionNumber(source)
             let newComponent = Qt.createComponent(avoidComponentCacheUrl)
             if (newComponent.status === Component.Ready) {
                 loaderData.component = newComponent
@@ -93,7 +103,6 @@ Item {
                     loaderData.updateObjectInstance()
                 } else {
                     ScriptContext.logError(loaderData.errorString)
-                    //console.log(loaderData.errorString)
                 }
             }
         }
