@@ -2,14 +2,36 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import QtCore
 import ScriptConsole
 import CodeEditor
 
 ApplicationWindow {
+    id: window
     width: 1280
     height: 720
     visible: true
     title: generateWindowTitle(loader.source)
+
+    Settings {
+        id: settings
+        property alias x: window.x
+        property alias y: window.y
+        property alias width: window.width
+        property alias height: window.height
+    }
+
+    Component.onCompleted: {
+        let result = DynamicFilesHelper.installStarterTemplates()
+        if (result === false)
+            console.log("failed to installStarterTemplates")
+        splitView.restoreState(settings.value("ui/splitview"))
+    }
+
+
+    Component.onDestruction: {
+        settings.setValue("ui/splitview", splitView.saveState())
+    }
 
     function generateWindowTitle(source: url) : string {
         let title = qsTr("Training Sandbox")
@@ -147,12 +169,6 @@ ApplicationWindow {
                 ToolTip.text: qsTr("Show/Hide Tools")
             }
         }
-    }
-
-    Component.onCompleted: {
-        let result = DynamicFilesHelper.installStarterTemplates()
-        if (result === false)
-            console.log("failed to installStarterTemplates")
     }
 
     SplitView {

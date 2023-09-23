@@ -1,4 +1,5 @@
 import QtQuick
+import QtCore
 import QtQuick.Controls
 import ScriptConsole
 import CodeEditor
@@ -7,6 +8,19 @@ SplitView {
     id: toolsSplitView
     readonly property alias codeEditor: codeEditor
     orientation: Qt.Vertical
+
+    Component.onCompleted: {
+        toolsSplitView.restoreState(settings.value("ui/toolsSplitView"))
+    }
+
+    Component.onDestruction: {
+        settings.setValue("ui/toolsSplitView", toolsSplitView.saveState())
+    }
+
+    Settings {
+        id: settings
+    }
+
     CodeEditor {
         id: codeEditor
         projectFolder: DynamicFilesHelper.dataDir
