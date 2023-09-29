@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     // get a handle to the DynamicFilesHelper singleton
-    auto dynamicFilesHelper = engine.singletonInstance<DynamicFilesHelper>("Main", "DynamicFilesHelper");
+//    auto dynamicFilesHelper = engine.singletonInstance<DynamicFilesHelper *>("Main", "DynamicFilesHelper");
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
         &app, []() { QCoreApplication::exit(-1); },

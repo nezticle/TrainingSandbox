@@ -190,7 +190,16 @@ ApplicationWindow {
                 id: loader
                 anchors.fill: parent
                 source: ""
-                onLoadedInstanceChanged: ScriptContext.expose(loadedInstance, "loadedInstance")
+                onLoadedInstanceChanged: {
+                    ScriptContext.expose(loader.loadedInstance, "loadedInstance")
+                    ScriptContext.expose(loader.screenshot, "screenshot")
+                }
+
+                function screenshot(filename: string) {
+                    loader.grabToImage(function(result) {
+                        result.saveToFile(filename)
+                    })
+                }
             }
 
             Image {
