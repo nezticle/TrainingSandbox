@@ -9,6 +9,7 @@ class DynamicFilesHelper : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QUrl dataDir READ dataDir CONSTANT FINAL)
+    Q_PROPERTY(QUrl qmllsBuildDir READ qmllsBuildDir CONSTANT FINAL)
     Q_PROPERTY(QList<QUrl> availableFiles READ availableFiles NOTIFY availableFilesChanged FINAL)
     Q_PROPERTY(QList<QString> availableFileNames READ availableFileNames NOTIFY availableFileNamesChanged FINAL)
     QML_SINGLETON
@@ -35,6 +36,8 @@ public:
     Q_INVOKABLE QString getFileName(const QUrl &url);
 
 
+    QUrl qmllsBuildDir() const;
+
 signals:
     void availableFilesChanged();
     void fileUpdated(const QUrl &url);
@@ -53,6 +56,7 @@ private:
     QFileSystemWatcher m_fileSystemWatcher;
     QHash<QString, QStringList> m_currentContents;
     QHash<QUrl, QString> m_availableFiles;
+    QUrl m_qmllsBuildDir;
 };
 
 #endif // DYNAMICFILESHELPER_H

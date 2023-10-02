@@ -12,6 +12,19 @@ DynamicFilesHelper::DynamicFilesHelper(QObject *parent)
     : QObject{parent}
 {
     m_dataDir = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QDir::separator() + "data");
+
+    // Get the QMLLS Build Directory
+    QDir applicationDirPath(QCoreApplication::applicationDirPath());
+#ifdef Q_OS_MACOS
+    applicationDirPath.cdUp();
+    applicationDirPath.cd("Resources");
+#elif Q_OS_IOS
+    applicationDirPath.cdUp();
+#endif
+    if (applicationDirPath.cd("qmlls_data")) {
+        m_qmllsBuildDir = QUrl::fromLocalFile(applicationDirPath.absolutePath());
+    }
+
     watchPath(m_dataDir.toLocalFile());
     connect(&m_fileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &DynamicFilesHelper::onDirectoryChanged);
     connect(&m_fileSystemWatcher, &QFileSystemWatcher::fileChanged, this, &DynamicFilesHelper::onFileChanged);
@@ -350,4 +363,9 @@ QString DynamicFilesHelper::getFileName(const QUrl &url)
     }
 
     return fileName;
+}
+
+QUrl DynamicFilesHelper::qmllsBuildDir() const
+{
+    return m_qmllsBuildDir;
 }

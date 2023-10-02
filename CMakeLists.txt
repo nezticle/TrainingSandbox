@@ -84,6 +84,37 @@ target_link_libraries(trainingSandbox
         codeeditormodule
 )
 
+# For qmlls to have completion for the TrainingSandbox module, we need to ship some build artifacts along with the app
+set(TRAINING_SANDBOX_DIR "${CMAKE_CURRENT_BINARY_DIR}/TrainingSandbox")
+
+# Use GLOB to collect files based on the patterns you've specified.
+file(GLOB TRAINING_SANDBOX_QML_FILES "${TRAINING_SANDBOX_DIR}/*.qml")
+file(GLOB TRAINING_SANDBOX_QMLDIR_FILES "${TRAINING_SANDBOX_DIR}/qmldir")
+file(GLOB TRAINING_SANDBOX_QMLTYPES_FILES "${TRAINING_SANDBOX_DIR}/*.qmltypes")
+
+# The destination directory
+set(TRAINING_SANDBOX_DEST_DIR "${CMAKE_CURRENT_BINARY_DIR}/qmlls_data/TrainingSandbox")
+
+if (APPLE)
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "iOS")
+        # For iOS, set the destination directory directly in the root of the app bundle.
+        set(TRAINING_SANDBOX_DEST_DIR "$<TARGET_BUNDLE_DIR:trainingSandbox>/qmlls_data/TrainingSandbox")
+    else()
+        # For macOS, use the Contents/Resources directory.
+        set(TRAINING_SANDBOX_DEST_DIR "$<TARGET_BUNDLE_DIR:trainingSandbox>/Contents/Resources/qmlls_data/TrainingSandbox")
+    endif()
+endif()
+
+# Define a post-build command to copy the files.
+add_custom_command(
+    TARGET trainingSandbox
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${TRAINING_SANDBOX_DEST_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy ${TRAINING_SANDBOX_QML_FILES} ${TRAINING_SANDBOX_QMLDIR_FILES} ${TRAINING_SANDBOX_QMLTYPES_FILES} "${TRAINING_SANDBOX_DEST_DIR}"
+    COMMENT "Copying QML files to ${TRAINING_SANDBOX_DEST_DIR}"
+)
+
+
 include(GNUInstallDirs)
 install(TARGETS trainingSandbox
     BUNDLE DESTINATION .
