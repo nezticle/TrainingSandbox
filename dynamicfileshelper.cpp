@@ -365,6 +365,22 @@ QString DynamicFilesHelper::getFileName(const QUrl &url)
     return fileName;
 }
 
+void DynamicFilesHelper::clearComponentCache()
+{
+    auto engine = qmlEngine(this);
+    if (engine) {
+        engine->clearComponentCache();
+    }
+}
+
+void DynamicFilesHelper::trimComponentCache()
+{
+    auto engine = qmlEngine(this);
+    if (engine) {
+        engine->trimComponentCache();
+    }
+}
+
 QUrl DynamicFilesHelper::qmllsBuildDir() const
 {
     return m_qmllsBuildDir;

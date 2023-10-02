@@ -26,6 +26,7 @@ Item {
             return;
 
         loaderData.cleanup();
+        DynamicFilesHelper.clearComponentCache();
         _loadSource();
     }
 

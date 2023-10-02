@@ -35,6 +35,9 @@ public:
 
     Q_INVOKABLE QString getFileName(const QUrl &url);
 
+    Q_INVOKABLE void clearComponentCache();
+    Q_INVOKABLE void trimComponentCache();
+
 
     QUrl qmllsBuildDir() const;
 
