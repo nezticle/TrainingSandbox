@@ -104,10 +104,10 @@ Item {
 
                 TapHandler {
                     acceptedButtons: Qt.LeftButton
-                    function onTapped(eventPoint, button) {
-                        subBallRoot.tapped()
-                        eventPoint.accepted = true
-                    }
+//                    function onTapped(eventPoint, button) {
+//                        subBallRoot.tapped()
+//                        eventPoint.accepted = true
+//                    }
                 }
 
                 Text {
