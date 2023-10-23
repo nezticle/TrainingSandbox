@@ -23,7 +23,9 @@ If your Qt installation provides the qmlls (qml language server) binary, the edi
 
 ## Licensing
 
-This application itself is provided under the Qt Commerical license (for now).  It also uses several 3rd party libraries which are licensed under compatible licenses (see submodule code for further details).
+The TrainingSandbox application is provided under the terms of the GPLv3 license. See [LICENSE.GPLv3](LICENSE.GPLv3)
+
+It also uses several 3rd party libraries which are licensed under compatible licenses (see submodule code for further details).
 
 This application directly uses the Dripicons V2 font which is provided under either the [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by-sa/4.0/) license or the [SIL Open Font License](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
 
