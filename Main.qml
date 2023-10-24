@@ -22,9 +22,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        let result = DynamicFilesHelper.installStarterTemplates()
-        if (result === false)
-            console.log("failed to installStarterTemplates")
         splitView.restoreState(settings.value("ui/splitview"))
     }
 

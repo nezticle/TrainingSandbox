@@ -19,6 +19,10 @@ int main(int argc, char *argv[])
 
     // get a handle to the DynamicFilesHelper singleton
     auto dynamicFilesHelper = engine.singletonInstance<DynamicFilesHelper *>("TrainingSandbox", "DynamicFilesHelper");
+
+    // Install the starter templates
+    dynamicFilesHelper->installStarterTemplates();
+
     // get the qmlls build dir
     const auto buildDirUrl = dynamicFilesHelper->qmllsBuildDir().toLocalFile();
     // TODO: Get the previous value first and append to it instead of overwriting it
