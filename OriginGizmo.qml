@@ -102,12 +102,9 @@ Item {
                     id: subBallHoverHandler
                 }
 
-                TapHandler {
-                    acceptedButtons: Qt.LeftButton
-//                    function onTapped(eventPoint, button) {
-//                        subBallRoot.tapped()
-//                        eventPoint.accepted = true
-//                    }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: subBallRoot.tapped()
                 }
 
                 Text {
