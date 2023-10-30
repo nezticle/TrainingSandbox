@@ -4,7 +4,7 @@ project(TrainingSandbox VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick Quick3D)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -64,6 +64,7 @@ qt_add_qml_module(trainingSandbox
     RESOURCES
         dripicons-v2.ttf
         sandbox.jpg
+        SOURCES texturedatabaker.h texturedatabaker.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -80,6 +81,7 @@ set_target_properties(trainingSandbox PROPERTIES
 target_link_libraries(trainingSandbox
     PRIVATE
         Qt6::Quick
+        Qt6::Quick3D
         scriptconsolemodule
         codeeditormodule
 )
