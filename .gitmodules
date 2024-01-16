@@ -1,9 +1,9 @@
 [submodule "CodeEditor"]
 	path = CodeEditor
-	url = git@git.qt.io:annichol/CodeEditor.git
+	url = https://git.qt.io/annichol/CodeEditor.git
 [submodule "ScriptConsole"]
 	path = ScriptConsole
-	url = git@git.qt.io:annichol/ScriptConsole.git
+	url = https://git.qt.io/annichol/ScriptConsole.git
 [submodule "data"]
 	path = data
-	url = git@git.qt.io:annichol/qt-quick-3d-training-templates.git
+	url = https://git.qt.io/annichol/qt-quick-3d-training-templates.git
