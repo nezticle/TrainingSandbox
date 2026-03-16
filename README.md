@@ -21,11 +21,25 @@ When the app starts, a set of template applications will be installed as a start
 
 If your Qt installation provides the qmlls (qml language server) binary, the editor will use this to provide auto-complete and inline diagnostics for syntax errors.
 
-## Licensing
+## Licensing Information
 
-The TrainingSandbox application is provided under the terms of the GPLv3 license. See [LICENSE.GPLv3](LICENSE.GPLv3)
+```
+Copyright (C) 2026 Qt Group.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+```
 
-It also uses several 3rd party libraries which are licensed under compatible licenses (see submodule code for further details).
+This code repository contains code samples and other materials designed to help you learn and practice QML development. The materials provided are intended for educational purposes to help test the skills you've gained from completing the Qt Quick 3D courses.
 
-This application directly uses the Dripicons V2 font which is provided under either the [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by-sa/4.0/) license or the [SIL Open Font License](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
+### Terms and Conditions
+
+If you, your employer, or the legal entity you act on behalf of hold commercial license(s) with a Qt Group entity, this software package constitutes Pre-Release Code under the Qt License/Frame Agreement governing those licenses, and that agreement's terms and conditions govern your access and use of this software package.
+
+This software package may provide links or access to third party libraries or code (collectively "Third-Party Software") to implement various functions. Use or distribution of Third-Party Software is discretionary and in all respects subject to applicable license terms of applicable third-party right holders.
+
+### Third-Party Attributions
+
+- **Dripicons V2** font — [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by-sa/4.0/) or [SIL Open Font License](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
+- Additional third-party dependencies are provided via submodules; see each submodule for their respective license details.
+
+Qt and respective logos are trademarks of The Qt Group.
 
